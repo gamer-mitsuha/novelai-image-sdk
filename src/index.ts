@@ -40,4 +40,6 @@ export {
   validateSteps,
   validateScale,
   validateSeed,
+  checkPromptLength,
 } from './utils/Validators';
+export type { PromptWarning } from './utils/Validators';

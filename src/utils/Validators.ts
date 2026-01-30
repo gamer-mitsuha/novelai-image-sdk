@@ -64,3 +64,34 @@ export function validateSeed(seed: number): void {
     throw new ValidationError(`Seed must be between 0 and 2^32-1, got ${seed}`);
   }
 }
+
+/**
+ * Warning result for prompt length check
+ */
+export interface PromptWarning {
+  isWarning: boolean;
+  message?: string;
+  length: number;
+  limit: number;
+}
+
+/**
+ * Check if prompt length exceeds recommended limit
+ * T5 encoder has different tokenization than CLIP, so this is a heuristic
+ * @param prompt - The full prompt string
+ * @param limit - Character limit (default: 2000)
+ * @returns Warning object with details
+ */
+export function checkPromptLength(prompt: string, limit = 2000): PromptWarning {
+  const length = prompt.length;
+  const isWarning = length > limit;
+  
+  return {
+    isWarning,
+    message: isWarning 
+      ? `Prompt length (${length} chars) exceeds recommended limit of ${limit}. This may cause truncation or unexpected results.`
+      : undefined,
+    length,
+    limit,
+  };
+}

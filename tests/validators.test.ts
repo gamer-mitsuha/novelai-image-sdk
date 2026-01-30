@@ -4,6 +4,7 @@ import {
   validateSteps,
   validateScale,
   validateSeed,
+  checkPromptLength,
 } from '../src/utils/Validators';
 
 describe('validateResolution', () => {
@@ -81,5 +82,32 @@ describe('validateSeed', () => {
 
   it('should reject non-integer seeds', () => {
     expect(() => validateSeed(123.45)).toThrow('integer');
+  });
+});
+
+describe('checkPromptLength', () => {
+  it('should return no warning for short prompts', () => {
+    const result = checkPromptLength('1girl, cyberpunk');
+    
+    expect(result.isWarning).toBe(false);
+    expect(result.message).toBeUndefined();
+    expect(result.length).toBe(16);
+    expect(result.limit).toBe(2000);
+  });
+
+  it('should return warning for prompts exceeding limit', () => {
+    const longPrompt = 'a'.repeat(2500);
+    const result = checkPromptLength(longPrompt);
+    
+    expect(result.isWarning).toBe(true);
+    expect(result.message).toContain('2500 chars');
+    expect(result.message).toContain('exceeds recommended limit');
+  });
+
+  it('should accept custom limit', () => {
+    const result = checkPromptLength('short prompt', 5);
+    
+    expect(result.isWarning).toBe(true);
+    expect(result.limit).toBe(5);
   });
 });
