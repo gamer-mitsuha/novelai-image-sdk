@@ -119,10 +119,11 @@ export class ImageRequestBuilder {
   }
 
   /**
-   * Set the guidance scale (CFG)
+   * Set the CFG (Classifier-Free Guidance) scale
+   * Higher values follow the prompt more strictly
    * @throws ValidationError if scale is out of range (0-10)
    */
-  setScale(scale: number): this {
+  setCfgScale(scale: number): this {
     validateScale(scale);
     this.scale = scale;
     return this;
@@ -150,17 +151,18 @@ export class ImageRequestBuilder {
   }
 
   /**
-   * Set the UC preset (predefined negative prompt configuration)
+   * Set the negative prompt preset (predefined undesired content filters)
+   * Heavy = Low Quality + Bad Anatomy, Light = Low Quality only, None = Custom only
    */
-  setUCPreset(preset: UCPreset): this {
+  setNegativePreset(preset: UCPreset): this {
     this.ucPreset = preset;
     return this;
   }
 
   /**
-   * Toggle automatic quality tags insertion
+   * Enable automatic quality tags ("best quality, amazing quality")
    */
-  setQualityToggle(enabled: boolean): this {
+  enableAutoQualityTags(enabled = true): this {
     this.qualityToggle = enabled;
     return this;
   }

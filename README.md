@@ -59,13 +59,13 @@ const client = new NovelAIClient({
 | `.addCharacterNegative(prompt)` | Add per-character negative prompt |
 | `.setSeed(seed)` | Random seed for reproducibility |
 | `.setSteps(steps)` | Sampling steps (1-50) |
-| `.setScale(scale)` | Guidance scale / CFG (0-10) |
+| `.setCfgScale(scale)` | CFG guidance scale (0-10) |
 | `.setBatchSize(n)` | Generate multiple images per request |
 | `.setSampler(sampler)` | Sampling algorithm |
-| `.setUCPreset(preset)` | UC preset (Heavy, Light, None) |
+| `.setNegativePreset(preset)` | Negative preset (Heavy, Light, None) |
 | `.enableSMEA(dynamic?)` | Enable SMEA/Dynamic SMEA |
 | `.enableDynamicThresholding()` | Enhanced contrast at high CFG |
-| `.setQualityToggle(enabled)` | Auto quality tags |
+| `.enableAutoQualityTags(enabled?)` | Auto quality tags (default: true) |
 | `.generate()` | Execute the request |
 
 ### Multi-Character Prompting

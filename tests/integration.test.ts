@@ -23,7 +23,7 @@ describe.skipIf(!NAI_TOKEN)('Live Integration Test', () => {
       .setPrompt('1girl, cyberpunk, neon lights, city background')
       .setSize(832, 1216)
       .setSteps(23)
-      .setScale(5.0)
+      .setCfgScale(5.0)
       .setSampler(NovelAISampler.EulerAncestral)
       .generate();
 

@@ -65,7 +65,7 @@ describe('ImageRequestBuilder', () => {
         .setPrompt('test prompt')
         .setSampler(NovelAISampler.DPM_2M)
         .setSteps(28)
-        .setScale(7.0)
+        .setCfgScale(7.0)
         .enableSMEA(true);
 
       expect(result).toBe(builder);
