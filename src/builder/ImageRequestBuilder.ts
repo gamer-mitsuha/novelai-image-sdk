@@ -30,6 +30,7 @@ export class ImageRequestBuilder {
   private qualityToggle = true;
   private smea = false;
   private smeaDyn = false;
+  private dynamicThresholding = false;
   private noiseSchedule: NoiseSchedule = NoiseSchedule.Karras;
 
   constructor(client: NovelAIClient) {
@@ -164,6 +165,23 @@ export class ImageRequestBuilder {
   }
 
   /**
+   * Enable dynamic thresholding
+   * Enhances contrast at high CFG scales (scale > 7)
+   */
+  enableDynamicThresholding(): this {
+    this.dynamicThresholding = true;
+    return this;
+  }
+
+  /**
+   * Disable dynamic thresholding
+   */
+  disableDynamicThresholding(): this {
+    this.dynamicThresholding = false;
+    return this;
+  }
+
+  /**
    * Build the V4 condition input structure for prompts
    */
   private buildV4ConditionInput(base: string, characters: string[]): V4ConditionInput {
@@ -216,6 +234,7 @@ export class ImageRequestBuilder {
       noise_schedule: this.noiseSchedule,
       sm: this.smea,
       sm_dyn: this.smeaDyn,
+      dynamic_thresholding: this.dynamicThresholding,
       prefer_brownian: true,
       deliberate_euler_ancestral_bug: true,
       legacy: false,

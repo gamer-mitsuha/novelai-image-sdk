@@ -125,6 +125,20 @@ describe('ImageRequestBuilder', () => {
     });
   });
 
+  describe('enableDynamicThresholding', () => {
+    it('should enable dynamic thresholding', () => {
+      builder.enableDynamicThresholding();
+      const payload = builder.buildPayload();
+
+      expect(payload.parameters.dynamic_thresholding).toBe(true);
+    });
+
+    it('should be disabled by default', () => {
+      const payload = builder.buildPayload();
+      expect(payload.parameters.dynamic_thresholding).toBe(false);
+    });
+  });
+
   describe('V4 structure compliance', () => {
     it('should produce correct V4 prompt structure', () => {
       builder.setPrompt('test', ['char1']);

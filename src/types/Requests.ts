@@ -42,6 +42,7 @@ export interface NovelAIParameters {
   noise_schedule: NoiseSchedule | string;
   sm: boolean;
   sm_dyn: boolean;
+  dynamic_thresholding: boolean;
   prefer_brownian: boolean;
   deliberate_euler_ancestral_bug: boolean;
   legacy: boolean;
