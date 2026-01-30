@@ -1,6 +1,6 @@
 {
   "name": "novelai-image-sdk",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Type-safe TypeScript SDK for NovelAI V4.5 image generation API",
   "type": "module",
   "main": "./dist/index.cjs",
