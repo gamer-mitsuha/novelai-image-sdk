@@ -55,13 +55,16 @@ const client = new NovelAIClient({
 | `.setSize(width, height)` | Image dimensions (must be multiples of 64) |
 | `.setPrompt(base, characters?)` | Set base prompt and optional character array |
 | `.addCharacter(prompt)` | Add a character prompt |
-| `.setNegativePrompt(prompt)` | What to avoid in generation |
+| `.setNegativePrompt(base, charNegatives?)` | What to avoid (supports per-character) |
+| `.addCharacterNegative(prompt)` | Add per-character negative prompt |
 | `.setSeed(seed)` | Random seed for reproducibility |
 | `.setSteps(steps)` | Sampling steps (1-50) |
 | `.setScale(scale)` | Guidance scale / CFG (0-10) |
+| `.setBatchSize(n)` | Generate multiple images per request |
 | `.setSampler(sampler)` | Sampling algorithm |
 | `.setUCPreset(preset)` | UC preset (Heavy, Light, None) |
 | `.enableSMEA(dynamic?)` | Enable SMEA/Dynamic SMEA |
+| `.enableDynamicThresholding()` | Enhanced contrast at high CFG |
 | `.setQualityToggle(enabled)` | Auto quality tags |
 | `.generate()` | Execute the request |
 
@@ -124,6 +127,19 @@ const result = await client.image()
 import { toDataURL } from 'novelai-image-sdk';
 const dataUrl = toDataURL(result.images[0]);
 document.getElementById('img').src = dataUrl;
+```
+
+### Prompt Length Check
+
+Check if prompts exceed the recommended limit before generation:
+
+```typescript
+import { checkPromptLength } from 'novelai-image-sdk';
+
+const warning = checkPromptLength(myLongPrompt);
+if (warning.isWarning) {
+  console.warn(warning.message); // "Prompt length (2500 chars) exceeds..."
+}
 ```
 
 ## Resolution Guidelines
