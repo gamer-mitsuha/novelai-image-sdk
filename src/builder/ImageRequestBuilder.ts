@@ -26,6 +26,7 @@ export class ImageRequestBuilder {
   private seed: number = Math.floor(Math.random() * 4294967295);
   private steps = 23;
   private scale = 5.0;
+  private nSamples = 1;
   private sampler: NovelAISampler = NovelAISampler.EulerAncestral;
   private ucPreset: UCPreset = UCPreset.Heavy;
   private qualityToggle = true;
@@ -124,6 +125,19 @@ export class ImageRequestBuilder {
   setScale(scale: number): this {
     validateScale(scale);
     this.scale = scale;
+    return this;
+  }
+
+  /**
+   * Set the number of images to generate in a single request
+   * Note: Each additional sample consumes Anlas credits
+   * @param count - Number of images (1-4 typically supported)
+   */
+  setBatchSize(count: number): this {
+    if (!Number.isInteger(count) || count < 1) {
+      throw new Error('Batch size must be a positive integer');
+    }
+    this.nSamples = count;
     return this;
   }
 
@@ -231,7 +245,7 @@ export class ImageRequestBuilder {
       scale: this.scale,
       sampler: this.sampler,
       steps: this.steps,
-      n_samples: 1,
+      n_samples: this.nSamples,
       seed: this.seed,
       negative_prompt: this.negativePrompt,
 

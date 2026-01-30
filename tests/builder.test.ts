@@ -33,11 +33,27 @@ describe('ImageRequestBuilder', () => {
       expect(payload.parameters.sampler).toBe(NovelAISampler.EulerAncestral);
       expect(payload.parameters.steps).toBe(23);
       expect(payload.parameters.scale).toBe(5.0);
+      expect(payload.parameters.n_samples).toBe(1);
       expect(payload.parameters.qualityToggle).toBe(true);
       expect(payload.parameters.params_version).toBe(3);
       expect(payload.parameters.noise_schedule).toBe(NoiseSchedule.Karras);
       expect(payload.parameters.sm).toBe(false);
       expect(payload.parameters.sm_dyn).toBe(false);
+    });
+  });
+
+  describe('setBatchSize', () => {
+    it('should set n_samples', () => {
+      builder.setBatchSize(4);
+      const payload = builder.buildPayload();
+
+      expect(payload.parameters.n_samples).toBe(4);
+    });
+
+    it('should throw on invalid batch size', () => {
+      expect(() => builder.setBatchSize(0)).toThrow('positive integer');
+      expect(() => builder.setBatchSize(-1)).toThrow('positive integer');
+      expect(() => builder.setBatchSize(1.5)).toThrow('positive integer');
     });
   });
 
