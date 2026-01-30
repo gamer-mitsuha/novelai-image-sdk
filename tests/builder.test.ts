@@ -107,6 +107,41 @@ describe('ImageRequestBuilder', () => {
     });
   });
 
+  describe('setNegativePrompt', () => {
+    it('should set base negative prompt', () => {
+      builder.setNegativePrompt('blurry, low quality');
+      const payload = builder.buildPayload();
+
+      expect(payload.parameters.negative_prompt).toBe('blurry, low quality');
+      expect(payload.parameters.v4_negative_prompt.caption.base_caption).toBe('blurry, low quality');
+    });
+
+    it('should support per-character negative prompts', () => {
+      builder.setNegativePrompt('lowres', ['bad hands', 'extra limbs']);
+      const payload = builder.buildPayload();
+
+      expect(payload.parameters.v4_negative_prompt.caption.base_caption).toBe('lowres');
+      expect(payload.parameters.v4_negative_prompt.caption.char_captions).toEqual([
+        'bad hands',
+        'extra limbs',
+      ]);
+    });
+
+    it('should add character negatives incrementally', () => {
+      builder
+        .setNegativePrompt('lowres')
+        .addCharacterNegative('bad face')
+        .addCharacterNegative('wrong pose');
+
+      const payload = builder.buildPayload();
+
+      expect(payload.parameters.v4_negative_prompt.caption.char_captions).toEqual([
+        'bad face',
+        'wrong pose',
+      ]);
+    });
+  });
+
   describe('enableSMEA', () => {
     it('should enable SMEA without dynamic', () => {
       builder.enableSMEA(false);

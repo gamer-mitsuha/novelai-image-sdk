@@ -22,6 +22,7 @@ export class ImageRequestBuilder {
   private prompt = '';
   private characterPrompts: string[] = [];
   private negativePrompt = '';
+  private characterNegativePrompts: string[] = [];
   private seed: number = Math.floor(Math.random() * 4294967295);
   private steps = 23;
   private scale = 5.0;
@@ -78,9 +79,22 @@ export class ImageRequestBuilder {
 
   /**
    * Set the negative prompt (what to avoid in generation)
+   * Optionally provide per-character negative prompts
    */
-  setNegativePrompt(negative: string): this {
-    this.negativePrompt = negative;
+  setNegativePrompt(base: string, characterNegatives?: string[]): this {
+    this.negativePrompt = base;
+    if (characterNegatives) {
+      this.characterNegativePrompts = characterNegatives;
+    }
+    return this;
+  }
+
+  /**
+   * Add a per-character negative prompt
+   * Should correspond to character prompts added via addCharacter()
+   */
+  addCharacterNegative(negativePrompt: string): this {
+    this.characterNegativePrompts.push(negativePrompt);
     return this;
   }
 
@@ -223,7 +237,7 @@ export class ImageRequestBuilder {
 
       // V4-specific structured prompts
       v4_prompt: this.buildV4ConditionInput(this.prompt, this.characterPrompts),
-      v4_negative_prompt: this.buildV4ConditionInput(this.negativePrompt, []),
+      v4_negative_prompt: this.buildV4ConditionInput(this.negativePrompt, this.characterNegativePrompts),
 
       // Quality and preset controls (camelCase - API requirement)
       qualityToggle: this.qualityToggle,
