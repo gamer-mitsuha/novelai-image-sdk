@@ -30,12 +30,18 @@
   "keywords": [
     "novelai",
     "image-generation",
-    "diffusion",
     "ai",
+    "anime",
+    "diffusion",
     "typescript",
-    "sdk"
+    "sdk",
+    "cli",
+    "nai",
+    "text-to-image",
+    "v4.5",
+    "multi-character"
   ],
-  "author": "",
+  "author": "gamer-mitsuha",
   "license": "Apache-2.0",
   "dependencies": {
     "adm-zip": "^0.5.10",
@@ -53,5 +59,13 @@
   },
   "bin": {
     "nai-gen": "./bin/nai-gen.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gamer-mitsuha/novelai-image-sdk.git"
+  },
+  "homepage": "https://github.com/gamer-mitsuha/novelai-image-sdk#readme",
+  "bugs": {
+    "url": "https://github.com/gamer-mitsuha/novelai-image-sdk/issues"
   }
 }
