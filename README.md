@@ -5,6 +5,7 @@ Type-safe TypeScript SDK for the NovelAI V4.5 image generation API.
 ## Features
 
 - 🎨 **Fluent Builder API** - Chainable methods for intuitive configuration
+- 🖥️ **CLI Tool** - Generate images from the command line with `nai-gen`
 - 📦 **Isomorphic** - Works in Node.js and browsers
 - 🔒 **Type-safe** - Full TypeScript with enums for all API constants
 - ⚡ **V4.5 Compliant** - Implements strict schema requirements for `nai-diffusion-4-5-full`
@@ -13,10 +14,57 @@ Type-safe TypeScript SDK for the NovelAI V4.5 image generation API.
 ## Installation
 
 ```bash
+# As a library
 npm install novelai-image-sdk
+
+# As a CLI tool (global)
+npm install -g novelai-image-sdk
 ```
 
-## Quick Start
+## CLI Usage
+
+After global install, the `nai-gen` command is available:
+
+```bash
+# Set your token
+export NAI_TOKEN="pst-..."
+
+# Basic generation
+nai-gen --prompt "1girl, silver hair, maid outfit, night window"
+
+# Landscape with custom settings
+nai-gen -p "cityscape, neon lights, rain" -s 1216x832 --steps 28 -o ./output
+
+# Multi-character
+nai-gen -p "cafe scene" -c "girl, blue hair, eating" -c "boy, red hoodie, drinking"
+
+# Full control
+nai-gen -p "1girl, detailed" -n "lowres, bad anatomy" \
+  --size 832x1216 --steps 28 --scale 5 --sampler k_euler \
+  --smea-dyn --seed 12345 -o /tmp/nai --prefix myimage
+```
+
+### CLI Options
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-p, --prompt` | (required) | Base prompt |
+| `-c, --character` | — | Character prompt (repeatable for multi-char) |
+| `-n, --negative` | — | Negative prompt |
+| `-o, --output` | `.` | Output directory |
+| `--prefix` | `nai` | Filename prefix |
+| `-s, --size` | `832x1216` | Image size (WxH, multiples of 64) |
+| `-m, --model` | `nai-diffusion-4-5-full` | Model name |
+| `--steps` | `28` | Sampling steps (1-50) |
+| `--scale` | `5` | CFG guidance scale (0-10) |
+| `--sampler` | `k_euler` | Sampling algorithm |
+| `--seed` | random | Random seed for reproducibility |
+| `-b, --batch` | `1` | Images per request |
+| `--smea` | off | Enable SMEA |
+| `--smea-dyn` | off | Enable Dynamic SMEA |
+| `-t, --token` | `$NAI_TOKEN` | API token (or use env var) |
+
+## SDK Quick Start
 
 ```typescript
 import { NovelAIClient, NovelAIModel } from 'novelai-image-sdk';
@@ -149,7 +197,7 @@ Dimensions must be multiples of 64. Common aspect ratios:
 | Aspect | Portrait | Landscape |
 |--------|----------|-----------|
 | 3:4 | 832×1216 | 1216×832 |
-| 1:1 | 1024×1024 | - |
+| 1:1 | 1024×1024 | — |
 | 2:3 | 768×1152 | 1152×768 |
 
 ## Getting Your API Token
@@ -162,4 +210,4 @@ Dimensions must be multiples of 64. Common aspect ratios:
 
 ## License
 
-Apache License 2.0 - see [LICENSE](./LICENSE) for details.
+Apache License 2.0 — see [LICENSE](./LICENSE) for details.
